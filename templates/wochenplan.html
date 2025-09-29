@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1>Wochenplan</h1>
+
+    <div class="food-card">
+        <img src={{ images }} alt="Bild">
+        <p class="food-title">{{ data.title }}</p>
+        <p class="rating">{{ data.rating.rating }}</p>
+        <p class="numVotes">{{ data.rating.numVotes }}</p>
+    </div>
+
+{% endblock %}

@@ -1,2 +1,6 @@
 flask_session
 __pycache__
+
+# Testfiles
+test.py
+test
