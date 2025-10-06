@@ -1,9 +1,6 @@
-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr 3fr;
-    width: 100%;
-    background-color: gray;
-    padding: 10px;
+body {
+    margin: 0;
+    background-image: url("pexels-enginakyurt-1435895.jpg");
 }
 
 a, a:hover, a:visited {
@@ -11,41 +8,8 @@ a, a:hover, a:visited {
     text-decoration: inherit;
 }
 
-.recipe-wrapper {
-    width: 100%;
+.body {
     display: flex;
-    flex-wrap: wrap;
-}
-
-.food-card {
-    width: 320px;
-    height: 320px;
-    background-color: beige;
-    padding: 16px;
-    margin: 4px;
-    border-radius: 16px;
-}
-.food-card:hover {
-    padding: 14px;
-    border: solid blue 2px;
-}
-
-.food-img {
-    max-width: 320px;
-}
-
-.food-title {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.food-rating {
-    display: flex;
-    gap: 8px;
-    justify-content: right;
-}
-
-.fr2 {
-    color: gray;
-    font-size: 12px;
+    align-items: center;
+    justify-content: center;
 }

@@ -1,0 +1,13 @@
+header {
+    display: grid;
+    grid-template-columns: 10em 1fr;
+    background-image: linear-gradient(to right, green, green, white);
+    padding: .5em;
+    margin: 1.5em;
+    font-size: 1.5em;
+    border-radius: 4px;
+}
+
+.navbar a {
+    margin-left: 1em;
+}

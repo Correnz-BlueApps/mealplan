@@ -44,24 +44,24 @@ def index():
         return render_template("index.html", data = data)
     
 # Manage Account and view favorite recipes
-@app.router("/account")
+@app.route("/account")
 def account():
     return 404
 
 # Login
-@app.route("/login", methodes=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     return 404
 
 # Logout
-@app.router("/logout")
+@app.route("/logout")
 def logout():
     return 404
 
 # Register
-@app.router("/register", methodes=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return 404
+    return render_template("register.html")
 
 # Get 7 dishes to cook for the week
 @app.route("/wochenplan")

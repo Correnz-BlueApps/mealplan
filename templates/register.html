@@ -1,11 +1,13 @@
-{% extends layout.html %}
+{% extends "layout.html" %}
 
 {% block body %}
 
     <form>
-        <input type="text" id="name">
+        <p>Name:</p>
+        <input type="text" id="name" autofocus>
+        <p>Password:</p>
         <input type="text" id="password">
-        <input type="submit">
+        <input type="submit" class="submit">
     </form>
 
 {% endblock %}
