@@ -25,30 +25,36 @@ def close_connection(exception):
 with app.app_context():
     db = get_db()
     db.execute('''
-        CREATE TABLE IF NOT EXISTS recipesRaw (
+        CREATE TABLE IF NOT EXISTS recipesRawV2 (
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             created_at TEXT,
             difficulty INTEGER,
-            is_plus BOOLEAN,
-            is_premium BOOLEAN,
             nutrition TEXT,
             preparationTime INTEGER,
             previewImageUrlTemplate TEXT,
-            rating REAL,
-            ratingCount INTEGER,
-            siteUrl TEXT
+            rating TEXT,
+            siteUrl TEXT,
+            source TEXT
         );
     ''')
     db.commit()
 
 QUERY_ALTERATIONS = [
-    "",
+    "12",
+    "13",
+    "21",
+    "22",
+    "56",
+    "58",
+    "64",
+    "65",
+    "66",
 ]
 
 
-def callAPI(offset, alteration):
-    url = f"https://api.chefkoch.de/v2/recipes?tags=21&limit=50&offset={offset}{alteration}"
+def callAPI(offset, tags):
+    url = f"https://api.chefkoch.de/v2/recipes?limit=50&offset={offset}&tags={tags}"
     
     try:
         response = requests.get(url)
@@ -67,25 +73,23 @@ with app.app_context():
             data = callAPI(i * 50, alteration)
             for a in data.get("results"):
                 recipe = a.get("recipe")
-                db = get_db()
-                db.execute('''
-                    INSERT OR IGNORE INTO recipesRaw (
-                        id, title, created_at, difficulty, is_plus, is_premium,
-                        nutrition, preparationTime, previewImageUrlTemplate,
-                        rating, ratingCount, siteUrl
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-                ''', (
-                    int(recipe.get("id")),
-                    recipe.get("title"),
-                    recipe.get("createdAt"),
-                    recipe.get("difficulty"),
-                    recipe.get("isPlus"),
-                    recipe.get("isPremium"),
-                    json.dumps(recipe.get("nutrition")),
-                    recipe.get("preparationTime"),
-                    json.dumps(recipe.get("previewImageUrlTemplate")).replace("<format>", "crop-640x360"),
-                    recipe.get("rating").get("rating"),
-                    recipe.get("rating").get("numVotes"),
-                    recipe.get("siteUrl")
-                ))
-                db.commit()
+                if recipe.get("isPlus") == False:
+                    db = get_db()
+                    db.execute('''
+                        INSERT OR IGNORE INTO recipesRawV2 (
+                            id, title, difficulty,
+                            nutrition, preparationTime, previewImageUrlTemplate,
+                            rating, siteUrl, source
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    ''', (
+                        int(recipe.get("id")),
+                        recipe.get("title"),
+                        recipe.get("difficulty"),
+                        json.dumps(recipe.get("nutrition")),
+                        recipe.get("preparationTime"),
+                        json.dumps(recipe.get("previewImageUrlTemplate")).replace("<format>", "crop-640x360"),
+                        json.dumps(recipe.get("rating")),
+                        recipe.get("siteUrl"),
+                        "chefkoch"
+                    ))
+                    db.commit()

@@ -39,7 +39,7 @@ def close_connection(exception):
 def index():
     with app.app_context():
         db = get_db()
-        table = db.execute("SELECT id FROM recipesRaw;").fetchall()
+        table = db.execute("SELECT id FROM recipesRawV2;").fetchall()
         data = recipeById(random.choice(table)[0])
         return render_template("index.html", data = data)
     
