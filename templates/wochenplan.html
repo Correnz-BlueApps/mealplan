@@ -4,11 +4,22 @@
 
     <h1>Wochenplan</h1>
 
-    <div class="food-card">
-        <img src={{ images }} alt="Bild">
-        <p class="food-title">{{ data.title }}</p>
-        <p class="rating">{{ data.rating.rating }}</p>
-        <p class="numVotes">{{ data.rating.numVotes }}</p>
+    <div class="recipe-wrapper">
+
+        {% for recipe in data %}
+            <a href={{ recipe.siteUrl }} target="_blank">
+                <div class="food-card">
+                    <img src={{ recipe.image }} alt="Bild" class="food-img">
+                    <p class="food-title">{{ recipe.title }}</p>
+                    <div class="food-rating">
+                        <div>{{ recipe.rating.rating }}</div>
+                        <div class="fr2">{{ recipe.rating.numVotes }}</div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
     </div>
+
 
 {% endblock %}

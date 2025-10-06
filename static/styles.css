@@ -6,3 +6,46 @@ header {
     padding: 10px;
 }
 
+a, a:hover, a:visited {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.recipe-wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.food-card {
+    width: 320px;
+    height: 320px;
+    background-color: beige;
+    padding: 16px;
+    margin: 4px;
+    border-radius: 16px;
+}
+.food-card:hover {
+    padding: 14px;
+    border: solid blue 2px;
+}
+
+.food-img {
+    max-width: 320px;
+}
+
+.food-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.food-rating {
+    display: flex;
+    gap: 8px;
+    justify-content: right;
+}
+
+.fr2 {
+    color: gray;
+    font-size: 12px;
+}

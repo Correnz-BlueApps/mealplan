@@ -1,5 +1,4 @@
 import requests
-import json
 
 def recipeById(recipe_id):
     url = f"https://api.chefkoch.de/v2/recipes/{recipe_id}"
