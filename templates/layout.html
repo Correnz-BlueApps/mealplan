@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mealplan</title>
-    <link rel="stylesheet" href="/static/styles.css">
-    <link rel="stylesheet" href="/static/navbar.css">
-    <link rel="stylesheet" href="/static/forms.css">
-    <link rel="stylesheet" href="/static/recipes.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='recipes.css') }}">
 </head>
 <body>
 
     <header>
         
-        <div id="logo">Mealplan</div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Mealplan Logo" class="logo-img">
+        </div>
 
         <nav class="navbar">
             <a href="/">Startseite</a>
