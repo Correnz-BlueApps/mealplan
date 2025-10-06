@@ -9,11 +9,19 @@ header {
 }
 
 .logo {
-    height: 2em;
+    height: 42px;
+    display: flex;
+    align-items: center;
 }
 .logo-img {
     height: 100%;
     margin-left: 8px;
+}
+.logo-title {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    margin-left: 12px;
 }
 
 .navbar {
