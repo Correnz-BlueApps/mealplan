@@ -1,11 +1,12 @@
-from flask import Flask, g, render_template
+from flask import Flask, g, render_template, request
 from flask_session import Session
+import os
 import random
 import sqlite3
-import os
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
-from helpers import recipeById
+from helpers import error, recipeById
 
 app = Flask(__name__)
 
@@ -33,6 +34,7 @@ def close_connection(exception):
 
 
 
+
 ### Routes ###
 
 @app.route("/")
@@ -42,16 +44,20 @@ def index():
         table = db.execute("SELECT id FROM recipesRawV2;").fetchall()
         data = recipeById(random.choice(table)[0])
         return render_template("index.html", data = data)
-    
+
 # Manage Account and view favorite recipes
 @app.route("/account")
 def account():
-    return 404
+    return error()
 
 # Login
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    return 404
+    if request.method == "POST":
+        return error()
+    
+    else:
+        return error()
 
 # Logout
 @app.route("/logout")
@@ -61,7 +67,29 @@ def logout():
 # Register
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "POST":
+        username = request.form.get("username")
+        password1 = request.form.get("password1")
+        password2 = request.form.get("password2")
+
+        if not username or not password1 or not password2:
+            return error("Fehler.")
+        
+        if password1 != password2:
+            return error("Gib bitte zwei Mal das selbe Passwort ein.")
+        
+        with app.app_context():
+            db = get_db()
+            
+            if len(db.execute("SELECT username FROM users WHERE username = ?;", [username]).fetchall()) > 0:
+                return error("Dieser Benutzername ist schon vergeben.")
+            
+            db.execute("INSERT INTO users (username, password) VALUES (?, ?);", [username, generate_password_hash(password1)])
+            db.commit()
+            return render_template("index.html")        ### TODO: bessere Startseite
+        
+    else:
+        return render_template("register.html")
 
 # Get 7 dishes to cook for the week
 @app.route("/wochenplan")

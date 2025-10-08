@@ -1,4 +1,10 @@
+from flask import render_template
 import requests
+
+
+def error(msg):
+    return render_template("error.html", errormsg=msg)
+
 
 def recipeById(recipe_id):
     url = f"https://api.chefkoch.de/v2/recipes/{recipe_id}"
