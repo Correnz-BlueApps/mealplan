@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template, request
+from flask import Flask, g, redirect, render_template, request, session
 from flask_session import Session
 import os
 import random
@@ -6,7 +6,7 @@ import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-from helpers import error, recipeById
+from helpers import error, login_required, recipeById
 
 app = Flask(__name__)
 
@@ -47,6 +47,7 @@ def index():
 
 # Manage Account and view favorite recipes
 @app.route("/account")
+@login_required
 def account():
     return error()
 
@@ -54,8 +55,22 @@ def account():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        return error()
-    
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if not username or not password:
+            return error("Fehler.")
+        
+        with app.app_context():
+            db = get_db()
+            dbEntry = db.execute("SELECT * FROM users WHERE username = ?;", [username]).fetchall()
+
+            if len(dbEntry) != 1 or not check_password_hash( dbEntry[0][2], password):
+                return error("Falscher Name oder falsches Passwort.")
+            
+            session["user"] = dbEntry[0][1]
+            return redirect("/wochenplan")
+
     else:
         return render_template("login.html")
 
@@ -86,6 +101,9 @@ def register():
             
             db.execute("INSERT INTO users (username, password) VALUES (?, ?);", [username, generate_password_hash(password1)])
             db.commit()
+
+            user = db.execute("SELECT * FROM users WHERE username = ?", [username]).fetchone()
+            session["user"] = user[1]
             return render_template("index.html")        ### TODO: bessere Startseite
         
     else:
@@ -93,6 +111,7 @@ def register():
 
 # Get 7 dishes to cook for the week
 @app.route("/wochenplan")
+@login_required
 def wochenplan():
     with app.app_context():
         db = get_db()
@@ -101,7 +120,6 @@ def wochenplan():
 
         for i in range(7):
             recipe = recipeById(random.choice(table)[0])
-            #recipe["rating"]["numVotes2"] = "(" + recipe["rating"]["numVotes"] + ")"
             recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
             data.append(recipe)
 
