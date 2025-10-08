@@ -57,7 +57,7 @@ def login():
         return error()
     
     else:
-        return error()
+        return render_template("login.html")
 
 # Logout
 @app.route("/logout")
