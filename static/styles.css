@@ -12,4 +12,12 @@ a, a:hover, a:visited {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+}
+
+.errormsg {
+    background-color: white;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 8px;
 }
