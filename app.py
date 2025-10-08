@@ -45,7 +45,7 @@ def index():
 @app.route("/account")
 @login_required
 def account():
-    return error()
+    return render_template("account.html")
 
 # Login
 @app.route("/login", methods=["GET", "POST"])
