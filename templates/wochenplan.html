@@ -5,16 +5,16 @@
     <div class="recipe-wrapper">
 
         {% for recipe in data %}
-            <a href="{{ recipe.siteUrl }}" target="_blank">
-                <div class="food-card">
-                    <img src="{{ recipe.image }}" alt="Bild" class="food-img">
-                    <p class="food-title">{{ recipe.title }}</p>
-                    <div class="food-rating">
-                        <div>{{ recipe.rating.rating }}</div>
-                        <div class="fr2">{{ recipe.rating.numVotes }}</div>
+            <div class="recipe-super-div">
+                <a href="{{ recipe.siteUrl }}" target="_blank">
+                    <div class="food-card">
+                        <img src="{{ recipe.image }}" alt="Bild" class="food-img">
+                        <div class="food-title">{{ recipe.title }}</div>
                     </div>
-                </div>
-            </a>
+                </a>
+                <img src="{{ url_for('static', filename='star.png')}}" class="recipe-img recipe-star" alt="Like" href="/">
+                <img src="{{ url_for('static', filename='delete.png')}}" class="recipe-img recipe-delete" alt="Delete" href="index.html">
+            </div>
         {% endfor %}
 
     </div>

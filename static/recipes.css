@@ -5,6 +5,10 @@
     justify-content: center;
 }
 
+.recipe-super-div {
+    margin-bottom: -50px;
+}
+
 .food-card {
     width: 320px;
     height: 320px;
@@ -12,10 +16,12 @@
     padding: 16px;
     margin: 4px;
     border-radius: 16px;
+    display: grid;
+    grid-template: 1fr 1fr 42px / 1fr;
 }
 .food-card:hover {
     padding: 14px;
-    border: solid blue 2px;
+    border: solid green 2px;
 }
 
 .food-img {
@@ -25,15 +31,24 @@
 .food-title {
     font-size: 24px;
     font-weight: bold;
+    margin-top: 16px;
+    overflow: hidden;
 }
 
-.food-rating {
-    display: flex;
-    gap: 8px;
-    justify-content: right;
+.recipe-img {
+    max-height: 50px;
+    border-radius: 25px;
+    position: relative;
+    top: -66px;
+}
+.recipe-img:hover {
+    background-color: lightgray;
 }
 
-.fr2 {
-    color: gray;
-    font-size: 12px;
+.recipe-star {
+    left: 16px;
+}
+
+.recipe-delete {
+    left: 244px;
 }
