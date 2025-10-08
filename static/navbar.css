@@ -2,7 +2,7 @@ header {
     display: grid;
     grid-template-columns: 10em 1fr;
     background-image: linear-gradient(to right, green, green, white);
-    padding: .5em;
+    padding: 8px;
     margin: 1.5em;
     font-size: 1.5em;
     border-radius: 4px;
@@ -30,5 +30,11 @@ header {
     justify-content: right;
 }
 .navbar a {
-    margin: 0 2.5em;
+    margin: 0 32px;
+    padding: 8px 24px;
+    border-radius: 8px;
+}
+
+.navbar a:hover {
+    background-color: rgba(255, 255, 255, .5);
 }
