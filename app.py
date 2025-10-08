@@ -39,11 +39,7 @@ def close_connection(exception):
 
 @app.route("/")
 def index():
-    with app.app_context():
-        db = get_db()
-        table = db.execute("SELECT id FROM recipesRawV2;").fetchall()
-        data = recipeById(random.choice(table)[0])
-        return render_template("index.html", data = data)
+    return render_template("index.html")
 
 # Manage Account and view favorite recipes
 @app.route("/account")
@@ -77,7 +73,8 @@ def login():
 # Logout
 @app.route("/logout")
 def logout():
-    return 404
+    session.clear()
+    return redirect("/")
 
 # Register
 @app.route("/register", methods=["GET", "POST"])
@@ -104,7 +101,7 @@ def register():
 
             user = db.execute("SELECT * FROM users WHERE username = ?", [username]).fetchone()
             session["user"] = user[1]
-            return render_template("index.html")        ### TODO: bessere Startseite
+            return redirect("/")        ### TODO: bessere Startseite
         
     else:
         return render_template("register.html")

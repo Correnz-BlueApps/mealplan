@@ -22,8 +22,13 @@
         <nav class="navbar">
             <a href="/">Startseite</a>
             <a href="/wochenplan">Wochenplan</a>
-            <a href="/register">Register</a>
-            <a href="/login">Login</a>
+            {% if session["user"] %}
+                <a href="/account">Account</a>
+                <a href="/logout">Logout</a>
+            {% else %}
+                <a href="/register">Register</a>
+                <a href="/login">Login</a>
+            {% endif %}
         </nav>
 
     </header>
