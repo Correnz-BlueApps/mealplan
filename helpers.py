@@ -1,6 +1,9 @@
 from flask import redirect, render_template, session
 from functools import wraps
+import random
 import requests
+
+from app import get_db
 
 
 def error(msg):
@@ -30,3 +33,9 @@ def recipeById(recipe_id):
     except (KeyError, ValueError) as e:
         print(f"Data parsing Error: {e}")
     return None
+
+def recipeRandom():
+    table = get_db().execute("SELECT id FROM recipesRaw;").fetchall()
+    recipe = recipeById(random.choice(table)[0])
+    recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
+    return recipe
