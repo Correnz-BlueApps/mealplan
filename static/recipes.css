@@ -52,3 +52,12 @@
 .recipe-delete {
     left: 244px;
 }
+
+.recipe-end-div {
+    width: 320px;
+    height: 320px;
+    background-color: beige;
+    padding: 16px;
+    margin: 4px;
+    border-radius: 16px;
+}

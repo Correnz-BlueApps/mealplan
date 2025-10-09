@@ -4,3 +4,30 @@ document.querySelectorAll(".recipe-delete").forEach( button => {
         button.parentElement.remove();
     });
 });
+
+// Button to add one more recipe
+document.querySelector("#add-one-recipe").addEventListener("click", async e => {
+    const res = await fetch("/oneRecipe");
+    const recipe = await res.json();
+
+    const html = `
+        <div class="recipe-super-div">
+            <a href=${ recipe.siteUrl } target="_blank">
+                <div class="food-card">
+                    <img src=${ recipe.image } alt="Bild" class="food-img">
+                    <div class="food-title">${ recipe.title }</div>
+                </div>
+            </a>
+            <img src="star.png" class="recipe-img recipe-star" alt="Like">
+            <img src="delete.png" class="recipe-img recipe-delete" alt="Delete">
+        </div>
+    `;
+    const div = document.createElement("div")
+    div.innerHTML = html;
+    const newDiv = div.firstElementChild;
+
+    // Add and order Element
+    const parent =document.querySelector(".recipe-wrapper");
+    parent.appendChild(newDiv);
+    parent.appendChild(e.currentTarget.parentElement); //TODO: still buggy
+});
