@@ -6,7 +6,7 @@ import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-from helpers import error, login_required, recipeById, recipeRandom
+from helpers import error, login_required, recipeById
 
 app = Flask(__name__)
 
@@ -78,10 +78,13 @@ def logout():
 
 # One Recipe
 @app.route("/oneRecipe")
-@login_required()
+@login_required
 def oneRecipe():
     with app.app_context():
-        return recipeRandom()
+        table = get_db().execute("SELECT id FROM recipesRaw;").fetchall()
+        recipe = recipeById(random.choice(table)[0])
+        recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
+        return recipe
 
 
 # Register
@@ -120,8 +123,11 @@ def register():
 def wochenplan():
     with app.app_context():
         data = []
+        table = get_db().execute("SELECT id FROM recipesRaw;").fetchall()
 
         for i in range(7):
-            data.append(recipeRandom())
+            recipe = recipeById(random.choice(table)[0])
+            recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
+            data.append(recipe)
 
         return render_template("wochenplan.html", data = data)

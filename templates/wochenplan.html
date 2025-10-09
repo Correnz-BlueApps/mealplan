@@ -12,11 +12,13 @@
                         <div class="food-title">{{ recipe.title }}</div>
                     </div>
                 </a>
-                <img src="{{ url_for('static', filename='star.png')}}" class="recipe-img recipe-star" alt="Like" href="/">
-                <img src="{{ url_for('static', filename='delete.png')}}" class="recipe-img recipe-delete" alt="Delete" href="index.html">
+                <img src="{{ url_for('static', filename='star.png') }}" class="recipe-img recipe-star" alt="Like">
+                <img src="{{ url_for('static', filename='delete.png') }}" class="recipe-img recipe-delete" alt="Delete">
             </div>
         {% endfor %}
 
     </div>
+
+    <script src="{{ url_for('static', filename='wochenplan.js') }}"></script>
 
 {% endblock %}
