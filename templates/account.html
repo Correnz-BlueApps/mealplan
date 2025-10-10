@@ -2,6 +2,23 @@
 
 {% block body %}
 
-    <div>Hier kannst du bald deine Lieblingsrezepte ansehen.</div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='account.css') }}">
+
+    <div class="account-super-div">
+        <div class="recipe-history account-div">
+            <span class="account-title">Deine letzten Wochen</span>
+
+        </div>
+
+        <div class="favorit-recipes account-div">
+            <span class="account-title">Favoriten</span>
+            
+        </div>
+
+        <div class="account-management account-div">
+            <span class="account-title">Account verwalten</span>
+            Hier kannst du bald deinen Account l&ouml;schen.
+        </div>
+    </div>
 
 {% endblock %}
