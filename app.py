@@ -47,6 +47,18 @@ def index():
 def account():
     return render_template("account.html")
 
+# Add recipe to favorites
+@app.route("/favoriteRecipe", methods=["POST"])
+@login_required
+def favoriteRecipe():
+    print(request.json)
+    with app.app_context():
+        db = get_db()
+        if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?", (session["user"], request.json.get("recipeId"))).fetchall()) == 0:
+            db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?)", (session["user"], request.json.get("recipeId")))
+            db.commit()
+        return "0"
+
 # Login
 @app.route("/login", methods=["GET", "POST"])
 def login():

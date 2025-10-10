@@ -1,3 +1,20 @@
+//Button to remember recipe
+document.querySelectorAll(".recipe-star").forEach( button => {
+    button.addEventListener("click", async e => {
+        const res = await fetch("/favoriteRecipe", {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                recipeId: button.id
+            })
+        });
+        if (res == "0") {
+            console.log("test");
+        }
+    });
+});
+
+
 // Button to delete the recipe
 document.querySelectorAll(".recipe-delete").forEach( button => {
     button.addEventListener("click", e => {
@@ -18,7 +35,7 @@ document.querySelector("#add-one-recipe").addEventListener("click", async functi
                     <div class="food-title">${ recipe.title }</div>
                 </div>
             </a>
-            <img src="/static/star.png" class="recipe-img recipe-star" alt="Like">
+            <img src="/static/star.png" class="recipe-img recipe-star" alt="Like" id=${ recipe.id }>
             <img src="/static/delete.png" class="recipe-img recipe-delete" alt="Delete">
         </div>
     `;
