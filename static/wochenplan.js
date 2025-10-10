@@ -6,7 +6,7 @@ document.querySelectorAll(".recipe-delete").forEach( button => {
 });
 
 // Button to add one more recipe
-document.querySelector("#add-one-recipe").addEventListener("click", async e => {
+document.querySelector("#add-one-recipe").addEventListener("click", async function (e) {
     const res = await fetch("/oneRecipe");
     const recipe = await res.json();
 
@@ -18,8 +18,8 @@ document.querySelector("#add-one-recipe").addEventListener("click", async e => {
                     <div class="food-title">${ recipe.title }</div>
                 </div>
             </a>
-            <img src="star.png" class="recipe-img recipe-star" alt="Like">
-            <img src="delete.png" class="recipe-img recipe-delete" alt="Delete">
+            <img src="/static/star.png" class="recipe-img recipe-star" alt="Like">
+            <img src="/static/delete.png" class="recipe-img recipe-delete" alt="Delete">
         </div>
     `;
     const div = document.createElement("div")
@@ -29,5 +29,5 @@ document.querySelector("#add-one-recipe").addEventListener("click", async e => {
     // Add and order Element
     const parent =document.querySelector(".recipe-wrapper");
     parent.appendChild(newDiv);
-    parent.appendChild(e.currentTarget.parentElement); //TODO: still buggy
+    parent.appendChild(this.parentElement);
 });
