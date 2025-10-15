@@ -15,3 +15,13 @@
     font-size: 24px;
     color: darkgreen;
 }
+
+.food-card {
+    max-height: 250px;
+    grid-template: 1fr 1fr / 1fr;
+}
+
+.recipe-delete {
+    left: 294px;
+    top: -274px;
+}

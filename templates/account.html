@@ -2,6 +2,7 @@
 
 {% block body %}
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='recipes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='account.css') }}">
 
     <div class="account-super-div">
@@ -12,7 +13,23 @@
 
         <div class="favorit-recipes account-div">
             <span class="account-title">Favoriten</span>
-            
+
+            <div class="recipe-wrapper">
+
+                {% for recipe in recipes %}
+                    <div class="recipe-super-div">
+                        <a href="{{ recipe.siteUrl }}" target="_blank">
+                            <div class="food-card">
+                                <img src="{{ recipe.image }}" alt="Bild" class="food-img">
+                                <div class="food-title">{{ recipe.title }}</div>
+                            </div>
+                        </a>
+                        <img src="{{ url_for('static', filename='delete.png') }}" class="recipe-img recipe-delete" id="{{ recipe.id }}" alt="Delete">
+                    </div>
+                {% endfor %}
+
+            </div>
+
         </div>
 
         <div class="account-management account-div">
@@ -20,5 +37,7 @@
             Hier kannst du bald deinen Account l&ouml;schen.
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='account.js') }}"></script>
 
 {% endblock %}

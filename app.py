@@ -45,18 +45,49 @@ def index():
 @app.route("/account")
 @login_required
 def account():
-    return render_template("account.html")
+    with app.app_context():
+        idList = get_db().execute("SELECT * FROM favorites WHERE userId = ?;", [session["user"]]).fetchall()
+
+        recipes = []
+        for entry in idList:
+            recipe = recipeById(entry[1])
+            recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
+            recipes.append(recipe)
+
+        print(recipes)
+        return render_template("account.html", recipes = recipes)
 
 # Add recipe to favorites
-@app.route("/favoriteRecipe", methods=["POST"])
+@app.route("/favoriteRecipeAdd", methods=["POST"])
 @login_required
-def favoriteRecipe():
+def favoriteRecipeAdd():
     print(request.json)
     with app.app_context():
         db = get_db()
-        if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?", (session["user"], request.json.get("recipeId"))).fetchall()) == 0:
-            db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?)", (session["user"], request.json.get("recipeId")))
+        if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")]).fetchall()) == 0:
+            db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?);", [session["user"], request.json.get("recipeId")])
             db.commit()
+        return "0"
+    
+# Remove recipe from Favorites
+@app.route("/favoriteRecipesRemove", methods=["POST"])
+@login_required
+def favoriteRecipeRemove():
+    with app.app_context():
+        db = get_db()
+        db.execute("DELETE FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")])
+        db.commit()
+        return {"answer": "success"}
+
+
+# Get all favorites recipes
+@app.route("/getAllFavoriteRecipes")
+@login_required
+def getAllFavoriteRecipes():
+    with app.app_context():
+        db = get_db()
+        idList = db.execute("SELECT * FROM favorites WHERE userId = ?;", (session["user"]))
+        print(idList)
         return "0"
 
 # Login
@@ -122,7 +153,7 @@ def register():
             db.execute("INSERT INTO users (username, password) VALUES (?, ?);", [username, generate_password_hash(password1)])
             db.commit()
 
-            user = db.execute("SELECT * FROM users WHERE username = ?", [username]).fetchone()
+            user = db.execute("SELECT * FROM users WHERE username = ?;", [username]).fetchone()
             session["user"] = user[1]
             return redirect("/")        ### TODO: bessere Startseite
         

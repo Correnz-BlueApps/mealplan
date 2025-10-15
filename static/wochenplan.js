@@ -1,9 +1,9 @@
 //Button to remember recipe
 document.querySelectorAll(".recipe-star").forEach( button => {
     button.addEventListener("click", async e => {
-        const res = await fetch("/favoriteRecipe", {
+        const res = await fetch("/favoriteRecipeAdd", {
             method: "post",
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 recipeId: button.id
             })
