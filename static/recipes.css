@@ -56,8 +56,28 @@
 .recipe-end-div {
     width: 320px;
     height: 320px;
-    background-color: beige;
     padding: 16px;
     margin: 4px;
+}
+
+.recipe-end-div-sub {
+    padding: 24px;
+    margin: 32px;
+    background-color: beige;
     border-radius: 16px;
+    display:grid;
+}
+
+#add-one-recipe {
+    font-size: 16px;
+    padding: 8px;
+}
+
+.save-week-form {
+    display: grid;
+    grid-gap: 8px;
+}
+
+.save-week-form input, .save-week-form button {
+    font-size: 16px;
 }

@@ -7,7 +7,7 @@
     <div class="recipe-wrapper">
 
         {% for recipe in data %}
-            <div class="recipe-super-div">
+            <div class="recipe-super-div" id="{{ recipe.id }}">
                 <a href="{{ recipe.siteUrl }}" target="_blank">
                     <div class="food-card">
                         <img src="{{ recipe.image }}" alt="Bild" class="food-img">
@@ -20,7 +20,15 @@
         {% endfor %}
 
         <div class="recipe-end-div">
-            <button id="add-one-recipe">Ein Rezept hinzufügen</button>
+            <div class="recipe-end-div-sub">
+                <button id="add-one-recipe">Ein Rezept hinzufügen</button>
+            </div>
+            <div class="recipe-end-div-sub">
+                <form class="save-week-form">
+                    <input type="text" placeholder="Name">
+                    <button id="save-week">Wochenplan speichern</button>
+                </form>
+            </div>
         </div>
 
     </div>
