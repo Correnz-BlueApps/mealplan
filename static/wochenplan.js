@@ -23,28 +23,53 @@ document.querySelectorAll(".recipe-delete").forEach( button => {
 });
 
 // Button to add one more recipe
-document.querySelector("#add-one-recipe").addEventListener("click", async function (e) {
-    const res = await fetch("/oneRecipe");
-    const recipe = await res.json();
+document.querySelector("#add-one-recipe").addEventListener("click", async function (e) {        // cannot use arrow function because we want to call "this" later
+    fetch("/oneRecipe")
+    .then(res => {
+        return res.json();
+    })
+    .then(recipe => {
+        const html = `
+            <div class="recipe-super-div">
+                <a href=${ recipe.siteUrl } target="_blank">
+                    <div class="food-card">
+                        <img src=${ recipe.image } alt="Bild" class="food-img">
+                        <div class="food-title">${ recipe.title }</div>
+                    </div>
+                </a>
+                <img src="/static/star.png" class="recipe-img recipe-star" alt="Like" id=${ recipe.id }>
+                <img src="/static/delete.png" class="recipe-img recipe-delete" alt="Delete">
+            </div>
+        `;
+        const div = document.createElement("div")
+        div.innerHTML = html;
+        const newDiv = div.firstElementChild;
+    
+        // Add and order Element
+        const parent =document.querySelector(".recipe-wrapper");
+        parent.appendChild(newDiv);
+        parent.appendChild(this.parentElement);
+    });
+});
 
-    const html = `
-        <div class="recipe-super-div">
-            <a href=${ recipe.siteUrl } target="_blank">
-                <div class="food-card">
-                    <img src=${ recipe.image } alt="Bild" class="food-img">
-                    <div class="food-title">${ recipe.title }</div>
-                </div>
-            </a>
-            <img src="/static/star.png" class="recipe-img recipe-star" alt="Like" id=${ recipe.id }>
-            <img src="/static/delete.png" class="recipe-img recipe-delete" alt="Delete">
-        </div>
-    `;
-    const div = document.createElement("div")
-    div.innerHTML = html;
-    const newDiv = div.firstElementChild;
-
-    // Add and order Element
-    const parent =document.querySelector(".recipe-wrapper");
-    parent.appendChild(newDiv);
-    parent.appendChild(this.parentElement);
+// Button to save Week
+document.querySelector("#save-week").addEventListener("click", async e => {
+    const weekName = document.querySelector("#week-name").value;
+    if(weekName != ""){
+        fetch("/saveWeek", {
+        method: "post",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                name: weekName
+            })
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(json => {
+            if(json == "success"){
+                console.log("recipe week saved")
+            }
+        });
+    }
 });
