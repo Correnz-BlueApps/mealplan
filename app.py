@@ -1,5 +1,6 @@
 from flask import Flask, g, redirect, render_template, request, session
 from flask_session import Session
+import json
 import os
 import random
 import sqlite3
@@ -159,6 +160,18 @@ def register():
         
     else:
         return render_template("register.html")
+
+# Save current week to account
+@app.route("/saveWeek", methods=["POST"])
+@login_required
+def saveWeek():
+    with app.app_context():
+        data = json.loads(request.data.decode('utf-8'))     #request.data was datatype bytes. solution from: https://stackoverflow.com/questions/6541767/python-urllib-error-attributeerror-bytes-object-has-no-attribute-read
+        db = get_db()
+        print(json.dumps(data.get("recipes")))
+        db.execute("INSERT INTO weeks (name, json, userId) VALUES (?, ?, ?);", [data.get("name"), json.dumps(data.get("recipes")), session["user"]])
+        db.commit()
+        return {"answer": "success"}
 
 # Get 7 dishes to cook for the week
 @app.route("/wochenplan")

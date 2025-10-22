@@ -54,20 +54,29 @@ document.querySelector("#add-one-recipe").addEventListener("click", async functi
 
 // Button to save Week
 document.querySelector("#save-week").addEventListener("click", async e => {
+    e.preventDefault();
+    
     const weekName = document.querySelector("#week-name").value;
+
+    let recipes = [];
+    document.querySelectorAll(".recipe-super-div").forEach( recipe => {
+        recipes.push(recipe.id);
+    });
+
     if(weekName != ""){
         fetch("/saveWeek", {
         method: "post",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                name: weekName
+                name: weekName,
+                recipes: recipes
             })
         })
         .then(res => {
             return res.json();
         })
         .then(json => {
-            if(json == "success"){
+            if(json.answer == "success"){
                 console.log("recipe week saved")
             }
         });
