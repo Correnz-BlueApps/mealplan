@@ -48,7 +48,7 @@ document.querySelector("#add-one-recipe").addEventListener("click", async functi
         // Add and order Element
         const parent =document.querySelector(".recipe-wrapper");
         parent.appendChild(newDiv);
-        parent.appendChild(this.parentElement);
+        parent.appendChild(this.parentElement.parentElement);
     });
 });
 
