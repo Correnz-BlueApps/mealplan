@@ -9,6 +9,29 @@
         <div class="recipe-history account-div">
             <span class="account-title">Deine letzten Wochen</span>
 
+            <div class="weeks-wrapper">
+
+                {% for week in weeks %}
+                    <div class="week-div" id="{{ week.name }}">
+                        <div class="week-name">{{ week.name }}</div>
+                        <img src="{{ url_for('static', filename='delete.png') }}" class="recipe-img recipe-img-mini" id="{{ week.id }}" alt="Delete">
+                        <div class="week-recipe-div">
+                            {% for recipe in week.recipes %}
+                                <div class="recipe-super-div recipe-super-div-mini">
+                                    <a href="{{ recipe.siteUrl }}" target="_blank">
+                                        <div class="food-card food-card-mini">
+                                            <img src="{{ recipe.image }}" alt="Bild" class="food-img food-img-mini">
+                                            <div class="food-title food-title-mini">{{ recipe.title }}</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
         </div>
 
         <div class="favorit-recipes account-div">

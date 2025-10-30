@@ -47,22 +47,35 @@ def index():
 @login_required
 def account():
     with app.app_context():
-        idList = get_db().execute("SELECT * FROM favorites WHERE userId = ?;", [session["user"]]).fetchall()
 
+        weekObjs = get_db().execute("SELECT * FROM weeks WHERE userId = ?;", [session["user"]]).fetchall()
+        weeks = []
+        for weekObj in weekObjs:
+            week = {
+                "id": weekObj[0],
+                "name": weekObj[1],
+                "recipes": []
+            }
+            for id in json.loads(weekObj[2]):
+                recipe = recipeById(id)
+                recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
+                week["recipes"].append(recipe)
+            weeks.append(week)
+            
+
+        idList = get_db().execute("SELECT * FROM favorites WHERE userId = ?;", [session["user"]]).fetchall()
         recipes = []
         for entry in idList:
             recipe = recipeById(entry[1])
             recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
             recipes.append(recipe)
 
-        print(recipes)
-        return render_template("account.html", recipes = recipes)
+        return render_template("account.html", recipes = recipes, weeks = weeks)
 
 # Add recipe to favorites
 @app.route("/favoriteRecipeAdd", methods=["POST"])
 @login_required
 def favoriteRecipeAdd():
-    print(request.json)
     with app.app_context():
         db = get_db()
         if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")]).fetchall()) == 0:
@@ -88,7 +101,6 @@ def getAllFavoriteRecipes():
     with app.app_context():
         db = get_db()
         idList = db.execute("SELECT * FROM favorites WHERE userId = ?;", (session["user"]))
-        print(idList)
         return "0"
 
 # Login
@@ -168,7 +180,6 @@ def saveWeek():
     with app.app_context():
         data = json.loads(request.data.decode('utf-8'))     #request.data was datatype bytes. solution from: https://stackoverflow.com/questions/6541767/python-urllib-error-attributeerror-bytes-object-has-no-attribute-read
         db = get_db()
-        print(json.dumps(data.get("recipes")))
         db.execute("INSERT INTO weeks (name, json, userId) VALUES (?, ?, ?);", [data.get("name"), json.dumps(data.get("recipes")), session["user"]])
         db.commit()
         return {"answer": "success"}
