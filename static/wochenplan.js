@@ -64,7 +64,7 @@ document.querySelector("#save-week").addEventListener("click", async e => {
     });
 
     if(weekName != ""){
-        fetch("/saveWeek", {
+        fetch("/weekAdd", {
         method: "post",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

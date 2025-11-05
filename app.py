@@ -175,13 +175,23 @@ def register():
         return render_template("register.html")
 
 # Save current week to account
-@app.route("/saveWeek", methods=["POST"])
+@app.route("/weekAdd", methods=["POST"])
 @login_required
-def saveWeek():
+def weekAdd():
     with app.app_context():
         data = json.loads(request.data.decode('utf-8'))     #request.data was datatype bytes. solution from: https://stackoverflow.com/questions/6541767/python-urllib-error-attributeerror-bytes-object-has-no-attribute-read
         db = get_db()
         db.execute("INSERT INTO weeks (name, json, userId) VALUES (?, ?, ?);", [data.get("name"), json.dumps(data.get("recipes")), session["user"]])
+        db.commit()
+        return {"answer": "success"}
+
+@app.route("/weekRemove", methods=["POST"])
+@login_required
+def weekRemove():
+    with app.app_context():
+        data = json.loads(request.data.decode('utf-8'))
+        db = get_db()
+        db.execute("DELETE FROM weeks WHERE id = ?;", [data.get("id")])
         db.commit()
         return {"answer": "success"}
 
