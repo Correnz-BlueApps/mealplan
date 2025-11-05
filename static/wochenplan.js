@@ -1,39 +1,36 @@
 //Button to remember recipe
-document.querySelectorAll(".recipe-star").forEach( button => {
-    button.addEventListener("click", async e => {
-        fetch("/favoriteRecipeAdd", {
-            method: "post",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                recipeId: button.id
-            })
+async function recipeLike(button) {
+    fetch("/favoriteRecipeAdd", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            recipeId: button.id
         })
-        .then(res => {
-            return res.json();
-        })
-        .then(data => {
-            console.log("test");
-            if (data.answer == "success") {
-                button.parentElement.querySelector("a").querySelector(".food-card").classList.add("yellow-transition1")
-                setTimeout(() => {
-                    button.parentElement.querySelector("a").querySelector(".food-card").classList.add("yellow-transition2")
-                    button.parentElement.querySelector("a").querySelector(".food-card").classList.remove("yellow-transition1")
-                }, 600);
-                setTimeout(() => {
-                    button.parentElement.querySelector("a").querySelector(".food-card").classList.remove("yellow-transition2")
-                }, 3000);
-            }
-        })
-    });
-});
+    })
+    .then(res => {
+        return res.json();
+    })
+    .then(data => {
+        console.log("test");
+        if (data.answer == "success") {
+            button.parentElement.querySelector("a").querySelector(".food-card").classList.add("yellow-transition1")
+            setTimeout(() => {
+                button.parentElement.querySelector("a").querySelector(".food-card").classList.add("yellow-transition2")
+                button.parentElement.querySelector("a").querySelector(".food-card").classList.remove("yellow-transition1")
+            }, 600);
+            setTimeout(() => {
+                button.parentElement.querySelector("a").querySelector(".food-card").classList.remove("yellow-transition2")
+            }, 3000);
+        }
+    })
+}
 
 
 // Button to delete the recipe
-document.querySelectorAll(".recipe-delete").forEach( button => {
-    button.addEventListener("click", e => {
-        button.parentElement.remove();
-    });
-});
+function recipeDelete(button) {
+    console.log(button);
+    button.parentElement.remove();
+}
 
 // Button to add one more recipe
 document.querySelector("#add-one-recipe").addEventListener("click", async function (e) {        // cannot use arrow function because we want to call "this" later
@@ -50,8 +47,8 @@ document.querySelector("#add-one-recipe").addEventListener("click", async functi
                         <div class="food-title">${ recipe.title }</div>
                     </div>
                 </a>
-                <img src="/static/star.png" class="recipe-img recipe-star" alt="Like" id=${ recipe.id }>
-                <img src="/static/delete.png" class="recipe-img recipe-delete" alt="Delete">
+                <img onclick="recipeLike(this)" src="/static/star.png" class="recipe-img recipe-star" alt="Like" id=${ recipe.id }>
+                <img onclick="recipeDelete(this)" src="/static/delete.png" class="recipe-img recipe-delete" alt="Delete">
             </div>
         `;
         const div = document.createElement("div")

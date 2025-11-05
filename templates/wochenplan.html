@@ -14,8 +14,8 @@
                         <div class="food-title">{{ recipe.title }}</div>
                     </div>
                 </a>
-                <img src="{{ url_for('static', filename='star.png') }}" class="recipe-img recipe-star" alt="Like" id="{{ recipe.id }}">
-                <img src="{{ url_for('static', filename='delete.png') }}" class="recipe-img recipe-delete" alt="Delete">
+                <img onclick="recipeLike(this);" src="{{ url_for('static', filename='star.png') }}" class="recipe-img recipe-star" alt="Like" id="{{ recipe.id }}">
+                <img onclick="recipeDelete(this);" src="{{ url_for('static', filename='delete.png') }}" class="recipe-img recipe-delete" alt="Delete">
             </div>
         {% endfor %}
 
