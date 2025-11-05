@@ -82,7 +82,7 @@ def favoriteRecipeAdd():
         if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")]).fetchall()) == 0:
             db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?);", [session["user"], request.json.get("recipeId")])
             db.commit()
-        return "0"
+        return {"answer": "success"}
     
 # Remove recipe from Favorites
 @app.route("/favoriteRecipesRemove", methods=["POST"])

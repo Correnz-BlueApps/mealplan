@@ -1,16 +1,29 @@
 //Button to remember recipe
 document.querySelectorAll(".recipe-star").forEach( button => {
     button.addEventListener("click", async e => {
-        const res = await fetch("/favoriteRecipeAdd", {
+        fetch("/favoriteRecipeAdd", {
             method: "post",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 recipeId: button.id
             })
-        });
-        if (res == "0") {
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
             console.log("test");
-        }
+            if (data.answer == "success") {
+                button.parentElement.querySelector("a").querySelector(".food-card").classList.add("yellow-transition1")
+                setTimeout(() => {
+                    button.parentElement.querySelector("a").querySelector(".food-card").classList.add("yellow-transition2")
+                    button.parentElement.querySelector("a").querySelector(".food-card").classList.remove("yellow-transition1")
+                }, 600);
+                setTimeout(() => {
+                    button.parentElement.querySelector("a").querySelector(".food-card").classList.remove("yellow-transition2")
+                }, 3000);
+            }
+        })
     });
 });
 
@@ -46,14 +59,14 @@ document.querySelector("#add-one-recipe").addEventListener("click", async functi
         const newDiv = div.firstElementChild;
     
         // Add and order Element
-        const parent =document.querySelector(".recipe-wrapper");
+        const parent = document.querySelector(".recipe-wrapper");
         parent.appendChild(newDiv);
         parent.appendChild(this.parentElement.parentElement);
     });
 });
 
 // Button to save Week
-document.querySelector("#save-week").addEventListener("click", async e => {
+document.querySelector("#save-week").addEventListener("click", async function (e) {
     e.preventDefault();
     
     const weekName = document.querySelector("#week-name").value;
@@ -77,7 +90,14 @@ document.querySelector("#save-week").addEventListener("click", async e => {
         })
         .then(json => {
             if(json.answer == "success"){
-                console.log("recipe week saved")
+                this.parentElement.parentElement.classList.add("green-transition1")
+                setTimeout(() => {
+                    this.parentElement.parentElement.classList.add("green-transition2")
+                    this.parentElement.parentElement.classList.remove("green-transition1")
+                }, 600);
+                setTimeout(() => {
+                    this.parentElement.parentElement.classList.remove("green-transition2")
+                }, 3000);
             }
         });
     }

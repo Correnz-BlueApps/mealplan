@@ -81,3 +81,17 @@
 .save-week-form input, .save-week-form button {
     font-size: 16px;
 }
+
+.yellow-transition1 {
+    transition: background-color .2s;
+    background-color: yellow;
+}
+
+.green-transition1 {
+    transition: background-color .2s;
+    background-color: green;
+}
+
+.yellow-transition2, .green-transition2 {
+    transition: background-color 2s;
+}
