@@ -30,7 +30,7 @@ document.querySelector("#add-one-recipe").addEventListener("click", async functi
     })
     .then(recipe => {
         const html = `
-            <div class="recipe-super-div">
+            <div class="recipe-super-div" id=${ recipe.id }>
                 <a href=${ recipe.siteUrl } target="_blank">
                     <div class="food-card">
                         <img src=${ recipe.image } alt="Bild" class="food-img">

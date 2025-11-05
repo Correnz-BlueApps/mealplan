@@ -58,7 +58,8 @@ def account():
             }
             for id in json.loads(weekObj[2]):
                 recipe = recipeById(id)
-                recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
+                if recipe and recipe["id"]:
+                    recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
                 week["recipes"].append(recipe)
             weeks.append(week)
             
@@ -69,7 +70,7 @@ def account():
             recipe = recipeById(entry[1])
             recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
             recipes.append(recipe)
-
+        print(weeks)
         return render_template("account.html", recipes = recipes, weeks = weeks)
 
 # Add recipe to favorites
