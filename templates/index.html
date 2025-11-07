@@ -2,8 +2,22 @@
 
 {% block body %}
 
-    <h1>Startseite</h1>
-    
-    <div>{{ data }}</div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+
+    <div class="main">
+        
+        <h1> Koche gesund und vielseitig </h1>
+
+        <p>
+            "Mealplan" ist dein persönlicher Assistent um eine leckere und ausgewogene Ernährung zu erreichen. Es greift auf eine persönlich sortiere Auswahl der besten Rezepte von Chefkoch zu und erstellt einen Plan für deine komplette Woche. Du kannst diesen Plan nach deinen Wünschen anpassen, Rezepte favorisieren und deine besten Wochen speichern um deine Rezepte schnell wieder zu finden.
+        </p>
+        <p>
+            "Mealplan" hilft dir neue Rezepte zu entdecken und deine Favoriten nicht zu vergessen.
+        </p>
+        <p>
+            Starte jetzt und registriere deinen Account.
+        </p>
+
+    </div>
 
 {% endblock %}
