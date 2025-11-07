@@ -1,7 +1,6 @@
 from flask import Flask, g, redirect, render_template, request, session
 from flask_session import Session
 import json
-import os
 import random
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -70,7 +69,6 @@ def account():
             recipe = recipeById(entry[1])
             recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
             recipes.append(recipe)
-        print(weeks)
         return render_template("account.html", recipes = recipes, weeks = weeks)
 
 # Add recipe to favorites
@@ -79,9 +77,12 @@ def account():
 def favoriteRecipeAdd():
     with app.app_context():
         db = get_db()
-        if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")]).fetchall()) == 0:
-            db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?);", [session["user"], request.json.get("recipeId")])
-            db.commit()
+        # check for malicious input
+        if len(db.execute("SELECT * FROM recipes WHERE id = ?;", [request.json.get("recipeId")]).fetchall()) > 0:
+            # check if already liked
+            if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")]).fetchall()) == 0:
+                db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?);", [session["user"], request.json.get("recipeId")])
+                db.commit()
         return {"answer": "success"}
     
 # Remove recipe from Favorites
@@ -93,16 +94,6 @@ def favoriteRecipeRemove():
         db.execute("DELETE FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")])
         db.commit()
         return {"answer": "success"}
-
-
-# Get all favorites recipes
-@app.route("/getAllFavoriteRecipes")
-@login_required
-def getAllFavoriteRecipes():
-    with app.app_context():
-        db = get_db()
-        idList = db.execute("SELECT * FROM favorites WHERE userId = ?;", (session["user"]))
-        return "0"
 
 # Login
 @app.route("/login", methods=["GET", "POST"])
