@@ -78,7 +78,7 @@ def favoriteRecipeAdd():
     with app.app_context():
         db = get_db()
         # check for malicious input
-        if json.get("recipeId") and len(db.execute("SELECT * FROM recipes WHERE id = ?;", [request.json.get("recipeId")]).fetchall()) > 0:
+        if request.json.get("recipeId") and len(db.execute("SELECT * FROM recipes WHERE id = ?;", [request.json.get("recipeId")]).fetchall()) > 0:
             # check if already liked
             if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")]).fetchall()) == 0:
                 db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?);", [session["user"], request.json.get("recipeId")])
