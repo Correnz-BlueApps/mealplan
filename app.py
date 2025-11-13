@@ -78,12 +78,13 @@ def favoriteRecipeAdd():
     with app.app_context():
         db = get_db()
         # check for malicious input
-        if len(db.execute("SELECT * FROM recipes WHERE id = ?;", [request.json.get("recipeId")]).fetchall()) > 0:
+        if json.get("recipeId") and len(db.execute("SELECT * FROM recipes WHERE id = ?;", [request.json.get("recipeId")]).fetchall()) > 0:
             # check if already liked
             if len(db.execute("SELECT * FROM favorites WHERE userId = ? AND recipeId = ?;", [session["user"], request.json.get("recipeId")]).fetchall()) == 0:
                 db.execute("INSERT INTO favorites (userId, recipeId) VALUES (?, ?);", [session["user"], request.json.get("recipeId")])
                 db.commit()
-        return {"answer": "success"}
+            return {"answer": "success"}
+        return {"answer": "error"}
     
 # Remove recipe from Favorites
 @app.route("/favoriteRecipesRemove", methods=["POST"])
@@ -129,7 +130,7 @@ def logout():
 @login_required
 def oneRecipe():
     with app.app_context():
-        table = get_db().execute("SELECT id FROM recipesRaw;").fetchall()
+        table = get_db().execute("SELECT id FROM recipes;").fetchall()
         recipe = recipeById(random.choice(table)[0])
         recipe["image"] = recipe.get("previewImageUrlTemplate").replace("<format>", "crop-640x360")
         return recipe
@@ -192,7 +193,7 @@ def weekRemove():
 def wochenplan():
     with app.app_context():
         data = []
-        table = get_db().execute("SELECT id FROM recipesRaw;").fetchall()
+        table = get_db().execute("SELECT id FROM recipes;").fetchall()
 
         for i in range(7):
             recipe = recipeById(random.choice(table)[0])

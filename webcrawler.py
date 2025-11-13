@@ -25,17 +25,10 @@ def close_connection(exception):
 with app.app_context():
     db = get_db()
     db.execute('''
-        CREATE TABLE IF NOT EXISTS recipesRawV2 (
+        CREATE TABLE IF NOT EXISTS recipes (
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
-            created_at TEXT,
-            difficulty INTEGER,
-            nutrition TEXT,
-            preparationTime INTEGER,
-            previewImageUrlTemplate TEXT,
-            rating TEXT,
-            siteUrl TEXT,
-            source TEXT
+            previewImageUrlTemplate TEXT
         );
     ''')
     db.commit()
@@ -73,23 +66,11 @@ with app.app_context():
             data = callAPI(i * 50, alteration)
             for a in data.get("results"):
                 recipe = a.get("recipe")
-                if recipe.get("isPlus") == False:
+                if recipe.get("isPlus") == False and recipe.get("isPremium") == False:
                     db = get_db()
-                    db.execute('''
-                        INSERT OR IGNORE INTO recipesRawV2 (
-                            id, title, difficulty,
-                            nutrition, preparationTime, previewImageUrlTemplate,
-                            rating, siteUrl, source
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-                    ''', (
+                    db.execute("INSERT OR IGNORE INTO recipes (id, title, previewImageUrlTemplate) VALUES (?, ?, ?);", (
                         int(recipe.get("id")),
                         recipe.get("title"),
-                        recipe.get("difficulty"),
-                        json.dumps(recipe.get("nutrition")),
-                        recipe.get("preparationTime"),
                         json.dumps(recipe.get("previewImageUrlTemplate")).replace("<format>", "crop-640x360"),
-                        json.dumps(recipe.get("rating")),
-                        recipe.get("siteUrl"),
-                        "chefkoch"
                     ))
                     db.commit()
