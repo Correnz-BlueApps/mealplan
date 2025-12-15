@@ -5,15 +5,16 @@ import random
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
 from helpers import error, login_required, recipeById
+
+
+### Flask ###
 
 app = Flask(__name__)
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
 
 
 ### Database Setup ###
@@ -114,7 +115,7 @@ def login():
                 return error("Falscher Name oder falsches Passwort.")
             
             session["user"] = dbEntry[0][1]
-            return redirect("/wochenplan")
+            return redirect("/account")
 
     else:
         return render_template("login.html")
@@ -161,7 +162,7 @@ def register():
 
             user = db.execute("SELECT * FROM users WHERE username = ?;", [username]).fetchone()
             session["user"] = user[1]
-            return redirect("/")        ### TODO: bessere Startseite
+            return redirect("/wochenplan")
         
     else:
         return render_template("register.html")
