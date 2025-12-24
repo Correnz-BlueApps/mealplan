@@ -1,5 +1,5 @@
 # Mealplan
-#### Video Demo: TODO
+#### Video Demo: https://youtu.be/khUP2dxQhKA
 #### Description:
 ##### Crawler
 The first Part of this project is a simple crawler, that uses the API "api.chefkoch.de/v2/recipes" to write the database table "recipes" with ids, that will be used by the website. To directly call specific recipes from the chefkoch-API.
@@ -20,4 +20,4 @@ At "/account" the user can view their bookmarked weekshedules and recipes. The r
 When clicking the navbar link leading to "/logout" the users session gets cleared and they get redirected to "/".
 
 ###### helpers.py
-Inside the helpers.py three functions used multiple time in the app.py. "error(msg)" renders a template with additional information about the error for the user. "login_required(f)" is decorator for the routes, that require login, pulled from the finance project of CS50. "recipe_by_id(recipe_id)" calls the chefkoch API with a recipe id to recive all information of the recipe.
+Inside the helpers.py three functions used multiple time in the app.py. "error(msg)" renders a template with additional information about the error for the user. "login_required(f)" is a decorator function for the routes, that require login, pulled from the finance project of CS50. "recipe_by_id(recipe_id)" calls the chefkoch API with a recipe id to recive all information of the recipe.
